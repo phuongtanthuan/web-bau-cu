@@ -3,191 +3,156 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tra cứu điểm bỏ phiếu - Phường Tân Thuận</title>
+<title>Tra cứu điểm bầu cử - Phường Tân Thuận</title>
 
 <style>
-body{margin:0;font-family:Arial;background:#f5f5f5}
-header{
-    background:#c40000;
-    color:#fff;
-    text-align:center;
-    padding:20px;
-    position:relative
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:#f5f5f5;
 }
-header img{
-    position:absolute;
-    right:15px;
-    top:10px;
-    width:110px;
+
+.header{
+background:#c40000;
+color:white;
+text-align:center;
+padding:25px 10px;
+position:relative;
 }
-.banner img{width:100%;max-height:300px;object-fit:cover}
-.search{
-    text-align:center;
-    padding:20px;
-    background:#fff
+
+.header h1{
+margin:0;
+font-size:26px;
 }
-input{
-    padding:10px;
-    width:220px;
-    font-size:16px
+
+.trongdong{
+position:absolute;
+right:20px;
+top:10px;
+width:120px;
+opacity:0.25; /* rõ hơn */
 }
-button{
-    padding:10px 18px;
-    font-size:16px;
-    background:#c40000;
-    color:#fff;
-    border:none;
-    cursor:pointer
+
+.search-box{
+background:#111;
+padding:20px;
+text-align:center;
 }
-.result{padding:20px}
-.map-box{
-    background:#fff;
-    margin-bottom:25px;
-    padding:15px;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,0.1)
+
+.search-box input{
+padding:10px;
+font-size:18px;
+width:120px;
 }
+
+.search-box button{
+padding:10px 20px;
+background:#e00000;
+color:white;
+border:none;
+font-size:16px;
+cursor:pointer;
+}
+
+.result{
+padding:20px;
+max-width:900px;
+margin:auto;
+}
+
+.card{
+background:white;
+padding:15px;
+margin-bottom:20px;
+border-radius:8px;
+box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
+
+.card h2{
+margin-top:0;
+color:#c40000;
+}
+
 iframe{
-    width:100%;
-    height:320px;
-    border:none;
-    border-radius:8px
+width:100%;
+height:400px;
+border:0;
+border-radius:8px;
+}
+
+@media(max-width:600px){
+iframe{
+height:300px;
+}
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<h2>TRA CỨU ĐIỂM BỎ PHIẾU<br>PHƯỜNG TÂN THUẬN</h2>
-<img src="trongdong.png">
-</header>
-
-<div class="banner">
-<img src="anh.jpg">
+<div class="header">
+<h1>TRA CỨU ĐIỂM BỎ PHIẾU<br>PHƯỜNG TÂN THUẬN</h1>
+<img src="trongdong.png" class="trongdong">
 </div>
 
-<div class="search">
-<input type="number" id="kp" placeholder="Nhập số khu phố (1-63)">
+<div class="search-box">
+<input type="number" id="kp" min="1" max="63" placeholder="Nhập KP">
 <button onclick="searchKP()">Tìm kiếm</button>
 </div>
 
-<div class="result" id="result"></div>
+<div id="result" class="result"></div>
 
 <script>
 
-const shared = {
-
-// ==== MAP LINK GỐC ====
-kp12 = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.98252803073566!2d106.7229571564723!3d10.75601489397565!4f13.1",
-kp34 = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d363.544057280712!2d106.72822795279407!3d10.754552789031653!4f13.1",
-kp5 = "https://www.google.com/maps/embed?pb=!3m2!1svi!2s!6m8!1m7!1s-URZiUsW68Drv4W3x69lzg!2m2!1d10.75749525182012!2d106.7361204719659",
-kp61011 = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d489.9738914726018!2d106.73505134445696!3d10.750574630446074!4f13.1",
-kp28 = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d816.163852773952!2d106.72624409970501!3d10.741598458156817!4f13.1",
-kp59 = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1959.9650931999552!2d106.7159024537291!3d10.73986409863197!4f13.1",
-kp61 = "https://www.google.com/maps/embed?pb=!3m2!1svi!2s!6m8!1m7!1ssrdULtdWiyqpP6jPnfcrsw!2m2!1d10.74053352561422!2d106.7209417355074"
-
-};
-
-// ==== DATA FULL 63 KP ====
+// ====== DATA GOOGLE MAP ======
+// M nhập đủ 63 link embed vào đây
+// Mẫu demo tao làm 3 cái trước
 
 const data = {
 
-1:[shared.kp12],
-2:[shared.kp12],
-3:[shared.kp34],
-4:[shared.kp34],
-5:[shared.kp5],
+1:{
+name:"Khu phố 1",
+map:"https://www.google.com/maps?q=10.7485723,106.7172376&output=embed"
+},
 
-6:[shared.kp61011,shared.kp61011,shared.kp61011],
-7:[shared.kp61011,shared.kp61011],
-8:[shared.kp61011,shared.kp61011,shared.kp61011],
-9:[shared.kp61011,shared.kp61011],
-10:[shared.kp61011,shared.kp61011],
-11:[shared.kp61011,shared.kp61011],
+2:{
+name:"Khu phố 2",
+map:"https://www.google.com/maps?q=10.7498968,106.7088865&output=embed"
+},
 
-12:[shared.kp34,shared.kp34],
-13:[shared.kp34,shared.kp34],
-14:[shared.kp34],
+5:{
+name:"Khu phố 5 - Nhà Văn Hóa KP5",
+map:"https://www.google.com/maps?q=10.7485723,106.7172376&output=embed"
+}
 
-15:[shared.kp59,shared.kp59],
-16:[shared.kp59],
-17:[shared.kp59,shared.kp59],
-18:[shared.kp59,shared.kp59],
-19:[shared.kp59,shared.kp59],
-20:[shared.kp59,shared.kp59],
-
-21:[shared.kp28,shared.kp28],
-22:[shared.kp28,shared.kp28],
-23:[shared.kp28],
-24:[shared.kp28,shared.kp28],
-25:[shared.kp28,shared.kp28,shared.kp28],
-26:[shared.kp28,shared.kp28,shared.kp28],
-27:[shared.kp28,shared.kp28,shared.kp28],
-28:[shared.kp28,shared.kp28,shared.kp28],
-29:[shared.kp28,shared.kp28],
-30:[shared.kp28,shared.kp28],
-31:[shared.kp28],
-32:[shared.kp28,shared.kp28,shared.kp28],
-33:[shared.kp28,shared.kp28,shared.kp28],
-34:[shared.kp28,shared.kp28,shared.kp28],
-
-35:[shared.kp28,shared.kp28],
-36:[shared.kp28,shared.kp28],
-37:[shared.kp28,shared.kp28],
-38:[shared.kp28,shared.kp28],
-39:[shared.kp28,shared.kp28],
-40:[shared.kp28],
-41:[shared.kp28],
-
-42:[shared.kp28,shared.kp28],
-43:[shared.kp28,shared.kp28],
-44:[shared.kp28],
-45:[shared.kp28],
-
-46:[shared.kp12],
-47:[shared.kp12],
-48:[shared.kp12,shared.kp12,shared.kp12],
-49:[shared.kp12,shared.kp12,shared.kp12],
-50:[shared.kp12,shared.kp12,shared.kp12],
-
-51:[shared.kp12,shared.kp28],
-52:[shared.kp28],
-53:[shared.kp28],
-54:[shared.kp12,shared.kp28],
-55:[shared.kp28,shared.kp28],
-56:[shared.kp28,shared.kp28],
-57:[shared.kp28,shared.kp28],
-
-58:[shared.kp28,shared.kp28,shared.kp59],
-59:[shared.kp28,shared.kp28,shared.kp59],
-60:[shared.kp61,shared.kp59],
-61:[shared.kp61,shared.kp59],
-62:[shared.kp61,shared.kp61],
-63:[shared.kp61,shared.kp61]
+// ===== COPY THÊM KP 3 → 63 VÀO ĐÂY =====
 
 };
 
 function searchKP(){
-    const kp=document.getElementById("kp").value;
-    const result=document.getElementById("result");
 
-    if(!data[kp]){
-        result.innerHTML="<h3>Không tìm thấy khu phố</h3>";
-        return;
-    }
+let kp = document.getElementById("kp").value;
+let result = document.getElementById("result");
 
-    let html=`<h3>Khu phố ${kp}</h3>`;
+if(!kp){
+alert("Nhập số khu phố");
+return;
+}
 
-    data[kp].forEach(link=>{
-        html+=`
-        <div class="map-box">
-            <iframe src="${link}" loading="lazy"></iframe>
-        </div>
-        `;
-    });
+if(!data[kp]){
+result.innerHTML="<div class='card'><h2>Không tìm thấy khu phố</h2></div>";
+return;
+}
 
-    result.innerHTML=html;
+let html = `
+<div class="card">
+<h2>${data[kp].name}</h2>
+<iframe src="${data[kp].map}" loading="lazy"></iframe>
+</div>
+`;
+
+result.innerHTML = html;
+
 }
 
 </script>
