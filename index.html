@@ -2,88 +2,101 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tra cứu điểm bầu cử - Phường Tân Thuận</title>
+<title>Tra cứu khu phố</title>
 
 <style>
 body{
-margin:0;
-font-family:Arial, sans-serif;
-background:#f5f5f5;
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#f4f6fa;
 }
 
+/* HEADER */
 .header{
-background:#c40000;
-color:white;
-text-align:center;
-padding:25px 10px;
-position:relative;
+    background:#d40000;
+    color:#ffd700;
+    text-align:center;
+    padding:15px;
+    font-size:20px;
+    font-weight:bold;
 }
 
-.header h1{
-margin:0;
-font-size:26px;
+/* PAGE CHUNG */
+.container{
+    max-width:900px;
+    margin:40px auto;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.1);
+}
+
+/* PAGE 1 */
+#page1{
+    background:#111827;
+    color:white;
+    text-align:center;
+}
+
+#page1 h2{
+    color:#ff6b4a;
+}
+
+input{
+    padding:10px;
+    width:250px;
+    border-radius:6px;
+    border:none;
+}
+
+button{
+    padding:10px 18px;
+    background:#d40000;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#b30000;
+}
+
+.hero-img{
+    margin-top:25px;
+}
+
+.hero-img img{
+    max-width:100%;
+    border-radius:10px;
 }
 
 .trongdong{
-position:absolute;
-right:20px;
-top:10px;
-width:120px;
-opacity:0.25; /* rõ hơn */
+    margin-top:20px;
 }
 
-.search-box{
-background:#111;
-padding:20px;
-text-align:center;
+/* PAGE 2 */
+#page2{
+    background:#ffffff;
+    color:#222;
 }
 
-.search-box input{
-padding:10px;
-font-size:18px;
-width:120px;
+#page2 h2{
+    color:#c40000;
+    text-align:center;
 }
 
-.search-box button{
-padding:10px 20px;
-background:#e00000;
-color:white;
-border:none;
-font-size:16px;
-cursor:pointer;
+.result-box{
+    background:#fff8e6;
+    padding:20px;
+    border-radius:10px;
+    margin-top:20px;
 }
-
-.result{
-padding:20px;
-max-width:900px;
-margin:auto;
-}
-
-.card{
-background:white;
-padding:15px;
-margin-bottom:20px;
-border-radius:8px;
-box-shadow:0 2px 6px rgba(0,0,0,0.2);
-}
-
-.card h2{
-margin-top:0;
-color:#c40000;
-}
-
 iframe{
-width:100%;
-height:400px;
-border:0;
-border-radius:8px;
-}
-
-@media(max-width:600px){
-iframe{
-height:300px;
-}
+    width:100%;
+    height:450px;
+    border-radius:10px;
+    border:none;
+    margin-top:15px;
 }
 </style>
 </head>
@@ -91,68 +104,407 @@ height:300px;
 <body>
 
 <div class="header">
-<h1>TRA CỨU ĐIỂM BỎ PHIẾU<br>PHƯỜNG TÂN THUẬN</h1>
-<img src="trongdong.png" class="trongdong">
+ỦY BAN BẦU CỬ PHƯỜNG TÂN THUẬN
 </div>
 
-<div class="search-box">
-<input type="number" id="kp" min="1" max="63" placeholder="Nhập KP">
-<button onclick="searchKP()">Tìm kiếm</button>
+<!-- PAGE 1 -->
+<div class="container" id="page1">
+    <h2>TRA CỨU KHU VỰC BỎ PHIẾU</h2>
+    <input type="number" id="khuPhoInput" placeholder="Nhập khu phố (1-63)">
+    <br><br>
+    <button onclick="searchKP()">Tìm kiếm</button>
+
+    <div class="hero-img">
+        <img src="anh.jpg">
+    </div>
+
+    <div class="trongdong">
+        <img src="trongdong.png" width="120">
+    </div>
 </div>
 
-<div id="result" class="result"></div>
+<!-- PAGE 2 -->
+<div class="container" id="page2" style="display:none;">
+    <h2>THÔNG TIN KHU VỰC BỎ PHIẾU</h2>
+    <div id="result"></div>
+    <br>
+    <button onclick="goBack()">QUAY LẠI</button>
+</div>
 
 <script>
-
-// ====== DATA GOOGLE MAP ======
-// M nhập đủ 63 link embed vào đây
-// Mẫu demo tao làm 3 cái trước
+/* ===== DATA CỦA M (M THÊM LINK MAP VÀO map:"") ===== */
 
 const data = {
 
-1:{
-name:"Khu phố 1",
-map:"https://www.google.com/maps?q=10.7485723,106.7172376&output=embed"
-},
+/* ===== ĐƠN VỊ 01 ===== */
 
-2:{
-name:"Khu phố 2",
-map:"https://www.google.com/maps?q=10.7498968,106.7088865&output=embed"
-},
+1:{donVi:"01",khuVuc:"01",locations:[
+{name:"Văn phòng Khu phố 1,2",address:"15 Trần Văn Khánh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.98252803073566!2d106.7229571564723!3d10.75601489397565!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f62a5a59a3d%3A0xa0915d618b1d42d7!2zMTUgVHLhuqduIFbEg24gS2jDoW5o!5e0!3m2!1svi!2s!4v1772168983278!5m2!1svi!2s"}]},
 
-5:{
-name:"Khu phố 5 - Nhà Văn Hóa KP5",
-map:"https://www.google.com/maps?q=10.7485723,106.7172376&output=embed"
-}
+2:{donVi:"01",khuVuc:"01",locations:[
+{name:"Văn phòng Khu phố 1,2",address:"15 Trần Văn Khánh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.98252803073566!2d106.7229571564723!3d10.75601489397565!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f62a5a59a3d%3A0xa0915d618b1d42d7!2zMTUgVHLhuqduIFbEg24gS2jDoW5o!5e0!3m2!1svi!2s!4v1772168983278!5m2!1svi!2s"}]},
 
-// ===== COPY THÊM KP 3 → 63 VÀO ĐÂY =====
+3:{donVi:"01",khuVuc:"03",locations:[
+{name:"Văn phòng Khu phố 3,4",address:"6/1 Lưu Trọng Lư, P. Tân Thuận, TP. HCM ",map:"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d489.9672140898371!2d106.72812387221123!3d10.754686373421492!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752500771d2dcd%3A0x30b477106e91c26b!2zVsSDbiBwaMOybmcga2h1IHBo4buRIDMgKEjhurttIDYsIEzGsHUgVHLhu41uZyBMxrA!5e0!3m2!1svi!2sus!4v1772187402256!5m2!1svi!2sus"}]},
+
+4:{donVi:"01",khuVuc:"03",locations:[
+{name:"Văn phòng Khu phố 3,4",address:"6/1 Lưu Trọng Lư, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d489.9672140898371!2d106.72812387221123!3d10.754686373421492!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752500771d2dcd%3A0x30b477106e91c26b!2zVsSDbiBwaMOybmcga2h1IHBo4buRIDMgKEjhurttIDYsIEzGsHUgVHLhu41uZyBMxrA!5e0!3m2!1svi!2sus!4v1772187402256!5m2!1svi!2sus"}]},
+
+5:{donVi:"01",khuVuc:"04",locations:[
+{name:"Văn phòng Khu phố 5",address:"Đường Liên Cảng A5, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15678.802485622049!2d106.7362033508799!3d10.75754043221365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752591ce6bd7e3%3A0xbf476c8a8dece27a!2z4bumeSBCYW4gTmjDom4gRMOibiBQaMaw4budbmcgVMOibiBUaHXhuq1uIMSQw7RuZyBWxINuIFBow7JuZyBLaHUgUGjhu5EgNQ!5e0!3m2!1svi!2s!4v1772187611500!5m2!1svi!2s"}]},
+
+46:{donVi:"01",khuVuc:"02",locations:[
+{name:"Văn phòng Khu phố 46,47,48",address:"75 Trần Xuân Soạn, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.98337486407047!2d106.7210217086459!3d10.754972256415082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772169263088!5m2!1svi!2s"}]},
+
+47:{donVi:"01",khuVuc:"02",locations:[
+{name:"Văn phòng Khu phố 46,47,48",address:"75 Trần Xuân Soạn, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.98337486407047!2d106.7210217086459!3d10.754972256415082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772169263088!5m2!1svi!2s"}]},
+
+48:{donVi:"01",khuVuc:"02",locations:[
+{name:"Văn phòng Khu phố 46,47,48",address:"75 Trần Xuân Soạn, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.98337486407047!2d106.7210217086459!3d10.754972256415082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772169263088!5m2!1svi!2s"}]},
+
+/* ===== ĐƠN VỊ 02 ===== */
+
+6:{donVi:"02",khuVuc:"05",locations:[
+{name:"Trường Mầm non 19/5",address:"39/18 Bùi Văn Ba, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.786551241513!2d106.72544804062059!3d10.750927262138845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175258467ce2667%3A0xf0046b4c0fdcfcfc!2zVFLGr-G7nE5HIE3huqZNIE5PTiAxOS81!5e0!3m2!1svi!2s!4v1772169834953!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 6,10,11",address:"237 Bùi Văn Ba, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d489.9738914726018!2d106.73505134445696!3d10.750574630446074!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752584cad1a4f7%3A0x325dc2d8756d1abb!2zMjM5IELDuWkgVsSDbiBCYSwgVMOibiBUaHXhuq1uIMSQw7RuZywgUXXhuq1uIDcsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1772169910934!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 7,8,9",address:"357 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d489.97528212406667!2d106.7285482113087!3d10.749718111154762!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525005fd2ff5b%3A0x45c61a042415ae6!2zxJDhuqNuZyBV4bu3IE5ow6JuIETDom4gUGjGsOG7nW5nIFTDom4gVGh14bqtbg!5e0!3m2!1svi!2s!4v1772188720618!5m2!1svi!2s"}]},
+
+8:{donVi:"02",khuVuc:"05",locations:[
+{name:"Trường Mầm non 19/5",address:"39/18 Bùi Văn Ba, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.786551241513!2d106.72544804062059!3d10.750927262138845!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175258467ce2667%3A0xf0046b4c0fdcfcfc!2zVFLGr-G7nE5HIE3huqZNIE5PTiAxOS81!5e0!3m2!1svi!2s!4v1772169834953!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 6,10,11",address:"237 Bùi Văn Ba, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d489.9738914726018!2d106.73505134445696!3d10.750574630446074!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752584cad1a4f7%3A0x325dc2d8756d1abb!2zMjM5IELDuWkgVsSDbiBCYSwgVMOibiBUaHXhuq1uIMSQw7RuZywgUXXhuq1uIDcsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1772169910934!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 7,8,9",address:"357 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d489.97528212406667!2d106.7285482113087!3d10.749718111154762!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525005fd2ff5b%3A0x45c61a042415ae6!2zxJDhuqNuZyBV4bu3IE5ow6JuIETDom4gUGjGsOG7nW5nIFTDom4gVGh14bqtbg!5e0!3m2!1svi!2s!4v1772188720618!5m2!1svi!2s"}]},
+
+10:{donVi:"02",khuVuc:"06",locations:[
+{name:"Chung cư Jamona",address:"210 Bùi Văn Ba, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2718.859646458184!2d106.73649728207933!3d10.750012446974102!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175259b47cc1bbd%3A0x2c81dd69e59cb921!2zMjEwIELDuWkgVsSDbiBCYSwgVMOibiBUaHXhuq1uIMSQw7RuZywgUXXhuq1uIDcsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCA3MDAwMDAsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1772170153457!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 6,10,11",address:"237 Bùi Văn Ba, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d489.9738914726018!2d106.73505134445696!3d10.750574630446074!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752584cad1a4f7%3A0x325dc2d8756d1abb!2zMjM5IELDuWkgVsSDbiBCYSwgVMOibiBUaHXhuq1uIMSQw7RuZywgUXXhuq1uIDcsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1772169910934!5m2!1svi!2s"}]},
+
+11:{donVi:"02",khuVuc:"06",locations:[
+{name:"Chung cư Jamona",address:"210 Bùi Văn Ba, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2718.859646458184!2d106.73649728207933!3d10.750012446974102!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175259b47cc1bbd%3A0x2c81dd69e59cb921!2zMjEwIELDuWkgVsSDbiBCYSwgVMOibiBUaHXhuq1uIMSQw7RuZywgUXXhuq1uIDcsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCA3MDAwMDAsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1772170153457!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 6,10,11",address:"237 Bùi Văn Ba, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d489.9738914726018!2d106.73505134445696!3d10.750574630446074!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752584cad1a4f7%3A0x325dc2d8756d1abb!2zMjM5IELDuWkgVsSDbiBCYSwgVMOibiBUaHXhuq1uIMSQw7RuZywgUXXhuq1uIDcsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1772169910934!5m2!1svi!2s"}]},
+
+9:{donVi:"02",khuVuc:"07",locations:[
+{name:"Văn phòng Khu phố 6,10,11",address:"237 Bùi Văn Ba, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d489.9738914726018!2d106.73505134445696!3d10.750574630446074!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752584cad1a4f7%3A0x325dc2d8756d1abb!2zMjM5IELDuWkgVsSDbiBCYSwgVMOibiBUaHXhuq1uIMSQw7RuZywgUXXhuq1uIDcsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1772169910934!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 7,8,9",address:"357 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d489.97528212406667!2d106.7285482113087!3d10.749718111154762!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525005fd2ff5b%3A0x45c61a042415ae6!2zxJDhuqNuZyBV4bu3IE5ow6JuIETDom4gUGjGsOG7nW5nIFTDom4gVGh14bqtbg!5e0!3m2!1svi!2s!4v1772188720618!5m2!1svi!2s"}]},
+
+/* ===== ĐƠN VỊ 03 ===== */
+
+7:{donVi:"03",khuVuc:"08",locations:[
+{name:"Trường Tiểu học Tân Thuận Đông",address:"8/7 Bùi Văn Ba, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1570.6205379527094!2d106.72853771972034!3d10.750080253123201!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752586a8c64057%3A0x583573f047eafeee!2zVHLGsOG7nW5nIFRp4buDdSBo4buNYyBUw6JuIFRodeG6rW4gxJDDtG5nIChjxqEgc-G7nyAyKQ!5e0!3m2!1svi!2s!4v1772170512672!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 7,8,9",address:"357 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d489.97528212406667!2d106.7285482113087!3d10.749718111154762!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525005fd2ff5b%3A0x45c61a042415ae6!2zxJDhuqNuZyBV4bu3IE5ow6JuIETDom4gUGjGsOG7nW5nIFTDom4gVGh14bqtbg!5e0!3m2!1svi!2s!4v1772188720618!5m2!1svi!2s"}]},
+
+12:{donVi:"03",khuVuc:"09",locations:[
+{name:"Đình Tân Thuận",address:"Hẻm 433 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2718.8864110876066!2d106.72792281378827!3d10.747041248197252!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752583d69622c1%3A0x28669384a0a7e507!2zxJDDrG5oIFTDom4gVGh14bqtbg!5e0!3m2!1svi!2s!4v1772170612101!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 12,13,14",address:"487/47/39 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d244.99107669075414!2d106.73267433500502!3d10.745485029147737!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772189398318!5m2!1svi!2s"}]},
+
+14:{donVi:"03",khuVuc:"10",locations:[
+{name:"Văn phòng Khu phố 12,13,14",address:"487/47/39 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d244.99107669075414!2d106.73267433500502!3d10.745485029147737!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772189398318!5m2!1svi!2s"}]},
+
+16:{donVi:"03",khuVuc:"11",locations:[
+{name:"Văn phòng Khu phố 15,16,17,18,19,20",address:"KDC Nam Long - Trần Trọng Cung, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d272.3608500613927!2d106.7355317335282!3d10.742888323550018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772171222666!5m2!1svi!2s"}]},
+
+18:{donVi:"03",khuVuc:"12",locations:[
+{name:"Chung cư An Viên 1",address:"Góc Đường số 7 & số 1 Khu Nam Long, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.906123283032!2d106.73118291012109!3d10.741718289360778!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525136aaf61fb%3A0xd7ccdac59cdd3d05!2zQ2h1bmcgY8awIEFuIFZpw6puIDE!5e0!3m2!1svi!2s!4v1772171295449!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 15,16,17,18,19,20",address:"KDC Nam Long - Trần Trọng Cung, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d272.3608500613927!2d106.7355317335282!3d10.742888323550018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772171222666!5m2!1svi!2s"}]},
+
+19:{donVi:"03",khuVuc:"12",locations:[
+{name:"Chung cư An Viên 1",address:"Góc Đường số 7 & số 1 Khu Nam Long, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.906123283032!2d106.73118291012109!3d10.741718289360778!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525136aaf61fb%3A0xd7ccdac59cdd3d05!2zQ2h1bmcgY8awIEFuIFZpw6puIDE!5e0!3m2!1svi!2s!4v1772171295449!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 15,16,17,18,19,20",address:"KDC Nam Long - Trần Trọng Cung, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d272.3608500613927!2d106.7355317335282!3d10.742888323550018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772171222666!5m2!1svi!2s"}]},
+
+/* ===== ĐƠN VỊ 04 ===== */
+
+13:{donVi:"04",khuVuc:"13",locations:[
+{name:"Nhà cô Nguyễn Thị Phương Lan",address:"487/35/17 Võ Thị Nhờ, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d252.16978674795908!2d106.73121926267882!3d10.745555767967014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525817f5cc55f%3A0x248ce0598204d1b4!2zSOG6u20gNDg3LzM1IEh14buzbmggVOG6pW4gUGjDoXQsIFTDom4gVGh14bqtbiDEkMO0bmcsIFF14bqtbiA3LCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1772171638978!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 12,13,14",address:"487/47/39 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d244.99107669075414!2d106.73267433500502!3d10.745485029147737!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772189398318!5m2!1svi!2s"}]},
+
+15:{donVi:"04",khuVuc:"14",locations:[
+{name:"Trụ sở Ban CHQS phường",address:"15/28 Trần Trọng Cung, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.99194862497302!2d106.72990329711!3d10.744410445644158!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175258205743743%3A0x142aa634e7478c45!2zVHLhuqduIFRy4buNbmcgQ3VuZy9I4bq7bSAxNSBQaMOybmcgNEEsIEtodSBQaOG7kSAxQSwgUXXhuq1uIDcsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1772171808966!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 15,16,17,18,19,20",address:"KDC Nam Long - Trần Trọng Cung, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d272.3608500613927!2d106.7355317335282!3d10.742888323550018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772171222666!5m2!1svi!2s"}]},
+
+17:{donVi:"04",khuVuc:"15",locations:[
+{name:"Chung cư Ehome 5",address:"167 Trần Trọng Cung, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d907.3313866961067!2d106.73555621829252!3d10.743072483802585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525afae8840f5%3A0x36f64e5b9eb2e5e9!2zMTY3IFRy4bqnbiBUcuG7jW5nIEN1bmcsIFTDom4gVGh14bqtbiDEkMO0bmcsIFF14bqtbiA3LCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmggNzAwMDAwLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1772171923069!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 15,16,17,18,19,20",address:"KDC Nam Long - Trần Trọng Cung, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d272.3608500613927!2d106.7355317335282!3d10.742888323550018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772171222666!5m2!1svi!2s"}]},
+
+20:{donVi:"04",khuVuc:"15",locations:[
+{name:"Chung cư Ehome 5",address:"167 Trần Trọng Cung, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d907.3313866961067!2d106.73555621829252!3d10.743072483802585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525afae8840f5%3A0x36f64e5b9eb2e5e9!2zMTY3IFRy4bqnbiBUcuG7jW5nIEN1bmcsIFTDom4gVGh14bqtbiDEkMO0bmcsIFF14bqtbiA3LCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmggNzAwMDAwLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1772171923069!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 15,16,17,18,19,20",address:"KDC Nam Long - Trần Trọng Cung, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d272.3608500613927!2d106.7355317335282!3d10.742888323550018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772171222666!5m2!1svi!2s"}]},
+
+21:{donVi:"04",khuVuc:"16",locations:[
+{name:"Chung cư Luxcity",address:"528 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.9451334566365!2d106.72739061012106!3d10.738712189363627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175257eab647af9%3A0x8383c28b1a501b15!2sChung%20C%C6%B0%20Luxcity!5e0!3m2!1svi!2s!4v1772171993445!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 22,24",address:"502/48A Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.99425244792968!2d106.72709864418!3d10.74157067194298!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772172418017!5m2!1svi!2s"}]},
+
+22:{donVi:"04",khuVuc:"16",locations:[
+{name:"Chung cư Luxcity",address:"528 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.9451334566365!2d106.72739061012106!3d10.738712189363627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175257eab647af9%3A0x8383c28b1a501b15!2sChung%20C%C6%B0%20Luxcity!5e0!3m2!1svi!2s!4v1772171993445!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 22,24",address:"502/48A Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.99425244792968!2d106.72709864418!3d10.74157067194298!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772172418017!5m2!1svi!2s"}]},
+
+/* ===== ĐƠN VỊ 05 ===== */
+
+23:{donVi:"05",khuVuc:"17",locations:[
+{name:"Nhà thi đấu đa năng",address:"504-506 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d353.20966303855596!2d106.72933834829362!3d10.741755445448653!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175257f2b60b56b%3A0xa4ce837665de2a34!2zTmjDoCBUaGkgxJDhuqV1IMSQYSBOxINuZyBRdeG6rW4gNw!5e0!3m2!1svi!2s!4v1772172515357!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 22,24",address:"502/48A Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.99425244792968!2d106.72709864418!3d10.74157067194298!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772172418017!5m2!1svi!2s"}]},
+
+24:{donVi:"05",khuVuc:"17",locations:[
+{name:"Nhà thi đấu đa năng",address:"504-506 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d353.20966303855596!2d106.72933834829362!3d10.741755445448653!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175257f2b60b56b%3A0xa4ce837665de2a34!2zTmjDoCBUaGkgxJDhuqV1IMSQYSBOxINuZyBRdeG6rW4gNw!5e0!3m2!1svi!2s!4v1772172515357!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 22,24",address:"502/48A Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.99425244792968!2d106.72709864418!3d10.74157067194298!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772172418017!5m2!1svi!2s"}]},
+
+25:{donVi:"05",khuVuc:"18",locations:[
+{name:"Văn phòng Khu phố 28,29,30,31,32",address:"23/19 Đường số 1 Lý Phục Man, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d816.163852773952!2d106.72624409970501!3d10.741598458156817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525f6885c311b%3A0xe4be3a10718e3b52!2zMjMgxJAuIFPhu5EgMTAsIFAuIFBow7ogVGh14bqtbiwgVGjhu6cgxJDhu6ljLCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1772172737457!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 25",address:"502/48 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d302.78710478214975!2d106.72694760078552!3d10.741487424200509!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175257f02ea18e3%3A0x5e13417737e8cf05!2zSHXhu7NuaCBU4bqlbiBQaMOhdC81NUQgSOG6u20gNTAyLCBLaHUgcGjhu5EgM0EsIFF14bqtbiA3LCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1772173088614!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 26,27",address:"1A Đường số 7 Lý Phục Man, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772173174153!5m2!1svi!2s!6m8!1m7!1sIty4ZE5ARwNR2GRIk-ae_g!2m2!1d10.7423766092424!2d106.7241832627075!3f73.76497992741696!4f5.6818086165216215!5f0.7820865974627469"}]},
+
+26:{donVi:"05",khuVuc:"18",locations:[
+{name:"Văn phòng Khu phố 28,29,30,31,32",address:"23/19 Đường số 1 Lý Phục Man, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d816.163852773952!2d106.72624409970501!3d10.741598458156817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525f6885c311b%3A0xe4be3a10718e3b52!2zMjMgxJAuIFPhu5EgMTAsIFAuIFBow7ogVGh14bqtbiwgVGjhu6cgxJDhu6ljLCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1772172737457!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 25",address:"502/48 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d302.78710478214975!2d106.72694760078552!3d10.741487424200509!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175257f02ea18e3%3A0x5e13417737e8cf05!2zSHXhu7NuaCBU4bqlbiBQaMOhdC81NUQgSOG6u20gNTAyLCBLaHUgcGjhu5EgM0EsIFF14bqtbiA3LCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1772173088614!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 26,27",address:"1A Đường số 7 Lý Phục Man, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772173174153!5m2!1svi!2s!6m8!1m7!1sIty4ZE5ARwNR2GRIk-ae_g!2m2!1d10.7423766092424!2d106.7241832627075!3f73.76497992741696!4f5.6818086165216215!5f0.7820865974627469"}]},
+
+27:{donVi:"05",khuVuc:"18",locations:[
+{name:"Văn phòng Khu phố 28,29,30,31,32",address:"23/19 Đường số 1 Lý Phục Man, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d816.163852773952!2d106.72624409970501!3d10.741598458156817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525f6885c311b%3A0xe4be3a10718e3b52!2zMjMgxJAuIFPhu5EgMTAsIFAuIFBow7ogVGh14bqtbiwgVGjhu6cgxJDhu6ljLCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1772172737457!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 25",address:"502/48 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d302.78710478214975!2d106.72694760078552!3d10.741487424200509!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175257f02ea18e3%3A0x5e13417737e8cf05!2zSHXhu7NuaCBU4bqlbiBQaMOhdC81NUQgSOG6u20gNTAyLCBLaHUgcGjhu5EgM0EsIFF14bqtbiA3LCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1772173088614!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 26,27",address:"1A Đường số 7 Lý Phục Man, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772173174153!5m2!1svi!2s!6m8!1m7!1sIty4ZE5ARwNR2GRIk-ae_g!2m2!1d10.7423766092424!2d106.7241832627075!3f73.76497992741696!4f5.6818086165216215!5f0.7820865974627469"}]},
+
+28:{donVi:"05",khuVuc:"18",locations:[
+{name:"Văn phòng Khu phố 28,29,30,31,32",address:"23/19 Đường số 1 Lý Phục Man, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d816.163852773952!2d106.72624409970501!3d10.741598458156817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525f6885c311b%3A0xe4be3a10718e3b52!2zMjMgxJAuIFPhu5EgMTAsIFAuIFBow7ogVGh14bqtbiwgVGjhu6cgxJDhu6ljLCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1772172737457!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 25",address:"502/48 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d302.78710478214975!2d106.72694760078552!3d10.741487424200509!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175257f02ea18e3%3A0x5e13417737e8cf05!2zSHXhu7NuaCBU4bqlbiBQaMOhdC81NUQgSOG6u20gNTAyLCBLaHUgcGjhu5EgM0EsIFF14bqtbiA3LCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1772173088614!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 26,27",address:"1A Đường số 7 Lý Phục Man, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772173174153!5m2!1svi!2s!6m8!1m7!1sIty4ZE5ARwNR2GRIk-ae_g!2m2!1d10.7423766092424!2d106.7241832627075!3f73.76497992741696!4f5.6818086165216215!5f0.7820865974627469"}]},
+
+/* ===== ĐƠN VỊ 06 ===== */
+
+29:{donVi:"06",khuVuc:"19",locations:[
+{name:"Trường THCS Huỳnh Tấn Phát",address:"488 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d762.9705792367639!2d106.72902370251256!3d10.743545189142298!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752578b35b19f3%3A0x61e659c8168693b1!2zVHLGsOG7nW5nIFRIQ1MgSHXhu7NuaCBU4bqlbiBQaMOhdA!5e0!3m2!1svi!2s!4v1772173250218!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 28,29,30,31,32",address:"23/19 Đường số 1, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d816.163852773952!2d106.72624409970501!3d10.741598458156817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525f6885c311b%3A0xe4be3a10718e3b52!2zMjMgxJAuIFPhu5EgMTAsIFAuIFBow7ogVGh14bqtbiwgVGjhu6cgxJDhu6ljLCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1772172737457!5m2!1svi!2s"}]},
+
+30:{donVi:"06",khuVuc:"19",locations:[
+{name:"Trường THCS Huỳnh Tấn Phát",address:"488 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d762.9705792367639!2d106.72902370251256!3d10.743545189142298!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752578b35b19f3%3A0x61e659c8168693b1!2zVHLGsOG7nW5nIFRIQ1MgSHXhu7NuaCBU4bqlbiBQaMOhdA!5e0!3m2!1svi!2s!4v1772173250218!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 28,29,30,31,32",address:"23/19 Đường số 1, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d816.163852773952!2d106.72624409970501!3d10.741598458156817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525f6885c311b%3A0xe4be3a10718e3b52!2zMjMgxJAuIFPhu5EgMTAsIFAuIFBow7ogVGh14bqtbiwgVGjhu6cgxJDhu6ljLCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1772172737457!5m2!1svi!2s"}]},
+
+32:{donVi:"06",khuVuc:"20",locations:[
+{name:"Trường THCS Huỳnh Tấn Phát",address:"488 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d762.9705792367639!2d106.72902370251256!3d10.743545189142298!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752578b35b19f3%3A0x61e659c8168693b1!2zVHLGsOG7nW5nIFRIQ1MgSHXhu7NuaCBU4bqlbiBQaMOhdA!5e0!3m2!1svi!2s!4v1772173250218!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 28,29,30,31,32",address:"23/19 Đường số 1, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d816.163852773952!2d106.72624409970501!3d10.741598458156817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525f6885c311b%3A0xe4be3a10718e3b52!2zMjMgxJAuIFPhu5EgMTAsIFAuIFBow7ogVGh14bqtbiwgVGjhu6cgxJDhu6ljLCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1772172737457!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 33,34",address:"418A Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772173930375!5m2!1svi!2s!6m8!1m7!1sFY2pK7gYpqxubqzwGSjpqw!2m2!1d10.74607593907004!2d106.7291273490728!3f266.78402948590394!4f3.317580673565743!5f0.7820865974627469"}]},
+
+
+33:{donVi:"06",khuVuc:"20",locations:[
+{name:"Trường THCS Huỳnh Tấn Phát",address:"488 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d762.9705792367639!2d106.72902370251256!3d10.743545189142298!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752578b35b19f3%3A0x61e659c8168693b1!2zVHLGsOG7nW5nIFRIQ1MgSHXhu7NuaCBU4bqlbiBQaMOhdA!5e0!3m2!1svi!2s!4v1772173250218!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 28,29,30,31,32",address:"23/19 Đường số 1, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d816.163852773952!2d106.72624409970501!3d10.741598458156817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525f6885c311b%3A0xe4be3a10718e3b52!2zMjMgxJAuIFPhu5EgMTAsIFAuIFBow7ogVGh14bqtbiwgVGjhu6cgxJDhu6ljLCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1772172737457!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 33,34",address:"418A Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772173930375!5m2!1svi!2s!6m8!1m7!1sFY2pK7gYpqxubqzwGSjpqw!2m2!1d10.74607593907004!2d106.7291273490728!3f266.78402948590394!4f3.317580673565743!5f0.7820865974627469"}]},
+
+
+34:{donVi:"06",khuVuc:"20",locations:[
+{name:"Trường THCS Huỳnh Tấn Phát",address:"488 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d762.9705792367639!2d106.72902370251256!3d10.743545189142298!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752578b35b19f3%3A0x61e659c8168693b1!2zVHLGsOG7nW5nIFRIQ1MgSHXhu7NuaCBU4bqlbiBQaMOhdA!5e0!3m2!1svi!2s!4v1772173250218!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 28,29,30,31,32",address:"23/19 Đường số 1, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d816.163852773952!2d106.72624409970501!3d10.741598458156817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525f6885c311b%3A0xe4be3a10718e3b52!2zMjMgxJAuIFPhu5EgMTAsIFAuIFBow7ogVGh14bqtbiwgVGjhu6cgxJDhu6ljLCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmgsIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1772172737457!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 33,34",address:"418A Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772173930375!5m2!1svi!2s!6m8!1m7!1sFY2pK7gYpqxubqzwGSjpqw!2m2!1d10.74607593907004!2d106.7291273490728!3f266.78402948590394!4f3.317580673565743!5f0.7820865974627469"}]},
+
+/* ===== ĐƠN VỊ 07 ===== */
+
+35:{donVi:"07",khuVuc:"21",locations:[
+{name:"Khu nhà mẫu dự án/ Công ty Xuân Mai",address:"Góc đường N1 và D1 gần chung cư Eco Green, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.98779148712975!2d106.72381180990635!3d10.749532804957944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752580c7cf2009%3A0x65e7c41b83af90f7!2zxJAuIE4xLCBUw6JuIFRodeG6rW4gVMOieSwgUXXhuq1uIDcsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1772174214077!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 39,40,41",address:"31 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.9856167421722!2d106.7272429790122!3d10.75221153040931!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772196823684!5m2!1svi!2s"}]},
+
+36:{donVi:"07",khuVuc:"21",locations:[
+{name:"Khu nhà mẫu dự án/ Công ty Xuân Mai",address:"Góc đường N1 và D1 gần chung cư Eco Green, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.98779148712975!2d106.72381180990635!3d10.749532804957944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752580c7cf2009%3A0x65e7c41b83af90f7!2zxJAuIE4xLCBUw6JuIFRodeG6rW4gVMOieSwgUXXhuq1uIDcsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1772174214077!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 39,40,41",address:"31 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.9856167421722!2d106.7272429790122!3d10.75221153040931!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772196823684!5m2!1svi!2s"}]},
+
+37:{donVi:"07",khuVuc:"21",locations:[
+{name:"Khu nhà mẫu dự án/ Công ty Xuân Mai",address:"Góc đường N1 và D1 gần chung cư Eco Green, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.98779148712975!2d106.72381180990635!3d10.749532804957944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752580c7cf2009%3A0x65e7c41b83af90f7!2zxJAuIE4xLCBUw6JuIFRodeG6rW4gVMOieSwgUXXhuq1uIDcsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1772174214077!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 39,40,41",address:"31 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.9856167421722!2d106.7272429790122!3d10.75221153040931!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772196823684!5m2!1svi!2s"}]},
+
+38:{donVi:"07",khuVuc:"21",locations:[
+{name:"Khu nhà mẫu dự án/ Công ty Xuân Mai",address:"Góc đường N1 và D1 gần chung cư Eco Green, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.98779148712975!2d106.72381180990635!3d10.749532804957944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752580c7cf2009%3A0x65e7c41b83af90f7!2zxJAuIE4xLCBUw6JuIFRodeG6rW4gVMOieSwgUXXhuq1uIDcsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1772174214077!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 39,40,41",address:"31 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.9856167421722!2d106.7272429790122!3d10.75221153040931!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772196823684!5m2!1svi!2s"}]},
+
+39:{donVi:"07",khuVuc:"21",locations:[
+{name:"Khu nhà mẫu dự án/ Công ty Xuân Mai",address:"Góc đường N1 và D1 gần chung cư Eco Green, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.98779148712975!2d106.72381180990635!3d10.749532804957944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752580c7cf2009%3A0x65e7c41b83af90f7!2zxJAuIE4xLCBUw6JuIFRodeG6rW4gVMOieSwgUXXhuq1uIDcsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1772174214077!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 39,40,41",address:"31 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.9856167421722!2d106.7272429790122!3d10.75221153040931!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772196823684!5m2!1svi!2s"}]},
+
+40:{donVi:"07",khuVuc:"22",locations:[
+{name:"Văn phòng Khu phố 39,40,41",address:"31 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.9856167421722!2d106.7272429790122!3d10.75221153040931!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772196823684!5m2!1svi!2s"}]},
+
+41:{donVi:"07",khuVuc:"22",locations:[
+{name:"Văn phòng Khu phố 39,40,41",address:"31 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d244.9856167421722!2d106.7272429790122!3d10.75221153040931!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772196823684!5m2!1svi!2s"}]},
+
+
+/* ===== ĐƠN VỊ 08 ===== */
+
+42:{donVi:"08",khuVuc:"23",locations:[
+{name:"Trụ sở Bảo Hiểm Xã Hội Quận 7 cũ",address:"136 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d277.6445954522009!2d106.72505867410945!3d10.75493437862501!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752d13c326a6fb%3A0x9573e1e83993d743!2zQuG6o28gSGnhu4NtIFjDoyBo4buZaSBRdeG6rW4gNw!5e0!3m2!1svi!2s!4v1772174425757!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 42,43,44,45",address:"136/20 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d424.0853190170469!2d106.72511153309301!3d10.754134613567652!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772197306754!5m2!1svi!2s"}]},
+
+43:{donVi:"08",khuVuc:"23",locations:[
+{name:"Trụ sở Bảo Hiểm Xã Hội Quận 7 cũ",address:"136 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d277.6445954522009!2d106.72505867410945!3d10.75493437862501!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752d13c326a6fb%3A0x9573e1e83993d743!2zQuG6o28gSGnhu4NtIFjDoyBo4buZaSBRdeG6rW4gNw!5e0!3m2!1svi!2s!4v1772174425757!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 42,43,44,45",address:"136/20 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d424.0853190170469!2d106.72511153309301!3d10.754134613567652!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772197306754!5m2!1svi!2s"}]},
+
+44:{donVi:"08",khuVuc:"24",locations:[
+{name:"Văn phòng Khu phố 42,43,44,45",address:"136/20 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d424.0853190170469!2d106.72511153309301!3d10.754134613567652!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772197306754!5m2!1svi!2s"}]},
+
+45:{donVi:"08",khuVuc:"24",locations:[
+{name:"Văn phòng Khu phố 42,43,44,45",address:"136/20 Huỳnh Tấn Phát, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d424.0853190170469!2d106.72511153309301!3d10.754134613567652!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772197306754!5m2!1svi!2s"}]},
+
+48:{donVi:"06",khuVuc:"25",locations:[
+{name:"Trụ sở Ủy ban MTTQ Việt Nam phường",address:"09 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d907.3176710915124!2d106.72122761316037!3d10.74763645568145!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772197736688!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 46,47,48",address:"52/9 đường Tân Mỹ, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772174813702!5m2!1svi!2s!6m8!1m7!1sANW1ZamH54cpI64-77Phzw!2m2!1d10.75202938107675!2d106.7192406366201!3f157.12594837750098!4f3.9714137115492747!5f0.7820865974627469"},
+
+{name:"Văn phòng Khu phố 49,50,51",address:"52/9 đường Tân Mỹ, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772174813702!5m2!1svi!2s!6m8!1m7!1sANW1ZamH54cpI64-77Phzw!2m2!1d10.75202938107675!2d106.7192406366201!3f157.12594837750098!4f3.9714137115492747!5f0.7820865974627469"}]},
+
+49:{donVi:"06",khuVuc:"25",locations:[
+{name:"Trụ sở Ủy ban MTTQ Việt Nam phường",address:"09 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d907.3176710915124!2d106.72122761316037!3d10.74763645568145!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772197736688!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 46,47,48",address:"52/9 đường Tân Mỹ, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772174813702!5m2!1svi!2s!6m8!1m7!1sANW1ZamH54cpI64-77Phzw!2m2!1d10.75202938107675!2d106.7192406366201!3f157.12594837750098!4f3.9714137115492747!5f0.7820865974627469"},
+
+{name:"Văn phòng Khu phố 49,50,51",address:"52/9 đường Tân Mỹ, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772174813702!5m2!1svi!2s!6m8!1m7!1sANW1ZamH54cpI64-77Phzw!2m2!1d10.75202938107675!2d106.7192406366201!3f157.12594837750098!4f3.9714137115492747!5f0.7820865974627469"}]},
+
+50:{donVi:"06",khuVuc:"25",locations:[
+{name:"Trụ sở Ủy ban MTTQ Việt Nam phường",address:"09 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d907.3176710915124!2d106.72122761316037!3d10.74763645568145!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772197736688!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 46,47,48",address:"52/9 đường Tân Mỹ, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772174813702!5m2!1svi!2s!6m8!1m7!1sANW1ZamH54cpI64-77Phzw!2m2!1d10.75202938107675!2d106.7192406366201!3f157.12594837750098!4f3.9714137115492747!5f0.7820865974627469"},
+
+{name:"Văn phòng Khu phố 49,50,51",address:"52/9 đường Tân Mỹ, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772174813702!5m2!1svi!2s!6m8!1m7!1sANW1ZamH54cpI64-77Phzw!2m2!1d10.75202938107675!2d106.7192406366201!3f157.12594837750098!4f3.9714137115492747!5f0.7820865974627469"}]},
+
+/* ===== ĐƠN VỊ 09 ===== */
+
+51:{donVi:"09",khuVuc:"26",locations:[
+{name:"Văn phòng Khu phố 49,50,51",address:"52/9 đường Tân Mỹ, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772174813702!5m2!1svi!2s!6m8!1m7!1sANW1ZamH54cpI64-77Phzw!2m2!1d10.75202938107675!2d106.7192406366201!3f157.12594837750098!4f3.9714137115492747!5f0.7820865974627469"},
+
+{name:"Văn phòng Khu phố 52,53,54,55,56",address:"18B Đường số 11N, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772174945373!5m2!1svi!2s!6m8!1m7!1s5ujyliCUV4bG95adnQggJw!2m2!1d10.74873776165994!2d106.717163703075!3f136.69773624959876!4f2.123492318038288!5f0.7820865974627469"}]},
+
+54:{donVi:"09",khuVuc:"26",locations:[
+{name:"Văn phòng Khu phố 49,50,51",address:"52/9 đường Tân Mỹ, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772174813702!5m2!1svi!2s!6m8!1m7!1sANW1ZamH54cpI64-77Phzw!2m2!1d10.75202938107675!2d106.7192406366201!3f157.12594837750098!4f3.9714137115492747!5f0.7820865974627469"},
+
+{name:"Văn phòng Khu phố 52,53,54,55,56",address:"18B Đường số 11N, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772174945373!5m2!1svi!2s!6m8!1m7!1s5ujyliCUV4bG95adnQggJw!2m2!1d10.74873776165994!2d106.717163703075!3f136.69773624959876!4f2.123492318038288!5f0.7820865974627469"}]},
+
+52:{donVi:"09",khuVuc:"27",locations:[
+{name:"Văn phòng Khu phố 52,53,54,55,56",address:"18B Đường số 11N, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772174945373!5m2!1svi!2s!6m8!1m7!1s5ujyliCUV4bG95adnQggJw!2m2!1d10.74873776165994!2d106.717163703075!3f136.69773624959876!4f2.123492318038288!5f0.7820865974627469"}]},
+
+53:{donVi:"09",khuVuc:"27",locations:[
+{name:"Văn phòng Khu phố 52,53,54,55,56",address:"18B Đường số 11N, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772174945373!5m2!1svi!2s!6m8!1m7!1s5ujyliCUV4bG95adnQggJw!2m2!1d10.74873776165994!2d106.717163703075!3f136.69773624959876!4f2.123492318038288!5f0.7820865974627469"}]},
+
+55:{donVi:"09",khuVuc:"28",locations:[
+{name:"Văn phòng Khu phố 52,53,54,55,56",address:"18B Đường số 11N, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772174945373!5m2!1svi!2s!6m8!1m7!1s5ujyliCUV4bG95adnQggJw!2m2!1d10.74873776165994!2d106.717163703075!3f136.69773624959876!4f2.123492318038288!5f0.7820865974627469"},
+
+{name:"Văn phòng Khu phố 57",address:"Đường số 41, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d392.6636761861299!2d106.71605682699123!3d10.74351337162058!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772175058040!5m2!1svi!2s"}]},
+
+56:{donVi:"09",khuVuc:"28",locations:[
+{name:"Văn phòng Khu phố 52,53,54,55,56",address:"18B Đường số 11N, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772174945373!5m2!1svi!2s!6m8!1m7!1s5ujyliCUV4bG95adnQggJw!2m2!1d10.74873776165994!2d106.717163703075!3f136.69773624959876!4f2.123492318038288!5f0.7820865974627469"},
+
+{name:"Văn phòng Khu phố 57",address:"Đường số 41, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d392.6636761861299!2d106.71605682699123!3d10.74351337162058!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772175058040!5m2!1svi!2s"}]},
+
+57:{donVi:"09",khuVuc:"28",locations:[
+{name:"Văn phòng Khu phố 52,53,54,55,56",address:"18B Đường số 11N, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772174945373!5m2!1svi!2s!6m8!1m7!1s5ujyliCUV4bG95adnQggJw!2m2!1d10.74873776165994!2d106.717163703075!3f136.69773624959876!4f2.123492318038288!5f0.7820865974627469"},
+
+{name:"Văn phòng Khu phố 57",address:"Đường số 41, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d392.6636761861299!2d106.71605682699123!3d10.74351337162058!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772175058040!5m2!1svi!2s"}]},
+
+/* ===== ĐƠN VỊ 10 ===== */
+
+58:{donVi:"10",khuVuc:"29",locations:[
+{name:"Trường Tiểu học Nguyễn Thị Định",address:"203 Lâm Văn Bền, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d679.7306382195594!2d106.71587674932152!3d10.74302778199115!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f8238da81dd%3A0x5c2c9728e05f43e4!2zVHLGsOG7nW5nIFRp4buDdSBo4buNYyBOZ3V54buFbiBUaOG7iyDEkOG7i25o!5e0!3m2!1svi!2s!4v1772175114660!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 58",address:"231 Lâm Văn Bền, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.99449095696707!2d106.71578849099078!3d10.741276634880673!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f83b82e6cc3%3A0x5245845fa6c0bdff!2zMjMxIMSQLiBMw6JtIFbEg24gQuG7gW4sIFTDom4gUXV5LCBRdeG6rW4gNywgVGjDoG5oIHBo4buRIEjhu5MgQ2jDrSBNaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1772175170142!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 59,60",address:"261B Lâm Văn Bền, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d1176.6752624442743!2d106.71593894612512!3d10.739996828429742!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772198446362!5m2!1svi!2s"}]},
+
+59:{donVi:"10",khuVuc:"29",locations:[
+{name:"Trường Tiểu học Nguyễn Thị Định",address:"203 Lâm Văn Bền, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d679.7306382195594!2d106.71587674932152!3d10.74302778199115!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f8238da81dd%3A0x5c2c9728e05f43e4!2zVHLGsOG7nW5nIFRp4buDdSBo4buNYyBOZ3V54buFbiBUaOG7iyDEkOG7i25o!5e0!3m2!1svi!2s!4v1772175114660!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 58",address:"231 Lâm Văn Bền, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.99449095696707!2d106.71578849099078!3d10.741276634880673!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f83b82e6cc3%3A0x5245845fa6c0bdff!2zMjMxIMSQLiBMw6JtIFbEg24gQuG7gW4sIFTDom4gUXV5LCBRdeG6rW4gNywgVGjDoG5oIHBo4buRIEjhu5MgQ2jDrSBNaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1772175170142!5m2!1svi!2s"},
+
+{name:"Văn phòng Khu phố 59,60",address:"261B Lâm Văn Bền, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d1176.6752624442743!2d106.71593894612512!3d10.739996828429742!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772198446362!5m2!1svi!2s"}]},
+
+60:{donVi:"10",khuVuc:"30",locations:[
+{name:"Văn phòng Khu phố 61,62,63",address:"Hẻm 320 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772175350629!5m2!1svi!2s!6m8!1m7!1ssrdULtdWiyqpP6jPnfcrsw!2m2!1d10.74053352561422!2d106.7209417355074!3f173.72007386030273!4f6.911393275050457!5f0.7820865974627469"},
+
+{name:"Văn phòng Khu phố 59,60",address:"261B Lâm Văn Bền, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d1176.6752624442743!2d106.71593894612512!3d10.739996828429742!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772198446362!5m2!1svi!2s"}]},
+
+61:{donVi:"10",khuVuc:"30",locations:[
+{name:"Văn phòng Khu phố 61,62,63",address:"Hẻm 320 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772175350629!5m2!1svi!2s!6m8!1m7!1ssrdULtdWiyqpP6jPnfcrsw!2m2!1d10.74053352561422!2d106.7209417355074!3f173.72007386030273!4f6.911393275050457!5f0.7820865974627469"},
+
+{name:"Văn phòng Khu phố 59,60",address:"261B Lâm Văn Bền, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d1176.6752624442743!2d106.71593894612512!3d10.739996828429742!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1772198446362!5m2!1svi!2s"}]},
+
+62:{donVi:"10",khuVuc:"31",locations:[
+{name:"Văn phòng Khu phố 61,62,63",address:"Hẻm 320 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772175350629!5m2!1svi!2s!6m8!1m7!1ssrdULtdWiyqpP6jPnfcrsw!2m2!1d10.74053352561422!2d106.7209417355074!3f173.72007386030273!4f6.911393275050457!5f0.7820865974627469"},
+
+{name:"Trường Mầm non Khôi Nguyên",address:"300/19 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.9031329359623!2d106.71775761012111!3d10.74194868936052!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f8054aa88f1%3A0x2780362d07227c3b!2zVHLGsOG7nW5nIE3huqdtIE5vbiBLaMO0aSBOZ3V5w6pu!5e0!3m2!1svi!2s!4v1772175469394!5m2!1svi!2s"}]},
+
+63:{donVi:"10",khuVuc:"31",locations:[
+{name:"Văn phòng Khu phố 61,62,63",address:"Hẻm 320 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!3m2!1svi!2s!4v1772175350629!5m2!1svi!2s!6m8!1m7!1ssrdULtdWiyqpP6jPnfcrsw!2m2!1d10.74053352561422!2d106.7209417355074!3f173.72007386030273!4f6.911393275050457!5f0.7820865974627469"},
+
+{name:"Trường Mầm non Khôi Nguyên",address:"300/19 Nguyễn Văn Linh, P. Tân Thuận, TP. HCM",map:"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.9031329359623!2d106.71775761012111!3d10.74194868936052!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f8054aa88f1%3A0x2780362d07227c3b!2zVHLGsOG7nW5nIE3huqdtIE5vbiBLaMO0aSBOZ3V5w6pu!5e0!3m2!1svi!2s!4v1772175469394!5m2!1svi!2s"}]},
 
 };
 
+/* =============================== */
+
 function searchKP(){
+    const value = document.getElementById("khuPhoInput").value;
+    const resultDiv = document.getElementById("result");
 
-let kp = document.getElementById("kp").value;
-let result = document.getElementById("result");
+    if(!data[value]){
+        alert("Không tìm thấy khu phố!");
+        return;
+    }
 
-if(!kp){
-alert("Nhập số khu phố");
-return;
+    const info = data[value];
+    let html = "";
+
+    info.locations.forEach(loc=>{
+        html += `
+        <div class="result-box">
+            <p><strong>Địa điểm:</strong> ${loc.name}</p>
+            <p><strong>Địa chỉ:</strong> ${loc.address}</p>
+            ${loc.map ? `<iframe src="${loc.map}" loading="lazy"></iframe>` : ""}
+        </div>
+        `;
+    });
+
+    resultDiv.innerHTML = html;
+
+    document.getElementById("page1").style.display="none";
+    document.getElementById("page2").style.display="block";
 }
 
-if(!data[kp]){
-result.innerHTML="<div class='card'><h2>Không tìm thấy khu phố</h2></div>";
-return;
-}
-
-let html = `
-<div class="card">
-<h2>${data[kp].name}</h2>
-<iframe src="${data[kp].map}" loading="lazy"></iframe>
-</div>
-`;
-
-result.innerHTML = html;
-
+function goBack(){
+    document.getElementById("page2").style.display="none";
+    document.getElementById("page1").style.display="block";
 }
 
 </script>
