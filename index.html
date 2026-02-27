@@ -3,169 +3,194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tra cứu địa điểm bầu cử</title>
+<title>Tra cứu điểm bỏ phiếu - Phường Tân Thuận</title>
 
 <style>
-body{
-    margin:0;
-    font-family: Arial, sans-serif;
-    background:#b30000;
-}
-
-/* TRỐNG ĐỒNG MỜ TO HƠN */
-body::before{
-    content:"";
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:url("trongdong.png") center center no-repeat;
-    background-size:800px;
-    opacity:0.35;   /* Tăng độ rõ */
-    z-index:0;
-}
-
-.header{
-    background:#cc0000;
-    color:white;
+body{margin:0;font-family:Arial;background:#f5f5f5}
+header{
+    background:#c40000;
+    color:#fff;
     text-align:center;
-    padding:25px 10px;
-    position:relative;
-    z-index:1;
+    padding:20px;
+    position:relative
 }
-
-.container{
-    width:90%;
-    max-width:800px;
-    margin:30px auto;
-    background:#111;
-    border:2px solid gold;
-    border-radius:15px;
-    padding:30px;
-    color:white;
+header img{
+    position:absolute;
+    right:15px;
+    top:10px;
+    width:110px;
+}
+.banner img{width:100%;max-height:300px;object-fit:cover}
+.search{
     text-align:center;
-    position:relative;
-    z-index:1;
+    padding:20px;
+    background:#fff
 }
-
-.title{
-    color:#ffcc00;
-    font-size:24px;
-    margin-bottom:20px;
-}
-
 input{
-    width:85%;
-    padding:14px;
-    border-radius:8px;
-    border:none;
-    margin-bottom:20px;
-    text-align:center;
-    font-size:16px;
+    padding:10px;
+    width:220px;
+    font-size:16px
 }
-
 button{
-    padding:12px 30px;
-    background:#cc0000;
-    color:white;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
+    padding:10px 18px;
     font-size:16px;
+    background:#c40000;
+    color:#fff;
+    border:none;
+    cursor:pointer
 }
-
-button:hover{
-    background:#990000;
-}
-
-.page{display:none;}
-
-.hero-img{
-    width:100%;
-    max-width:650px;
-    border-radius:15px;
-    margin:25px 0;
-    border:3px solid gold;
-}
-
-.map-box iframe{
-    width:100%;
-    height:400px;
+.result{padding:20px}
+.map-box{
+    background:#fff;
+    margin-bottom:25px;
+    padding:15px;
     border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1)
+}
+iframe{
+    width:100%;
+    height:320px;
+    border:none;
+    border-radius:8px
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">
-    <h2>ỦY BAN BẦU CỬ PHƯỜNG TÂN THUẬN</h2>
+<header>
+<h2>TRA CỨU ĐIỂM BỎ PHIẾU<br>PHƯỜNG TÂN THUẬN</h2>
+<img src="trongdong.png">
+</header>
+
+<div class="banner">
+<img src="anh.jpg">
 </div>
 
-<!-- TRANG 1 -->
-<div class="container page" id="page1">
-    <div class="title">TRA CỨU ĐỊA ĐIỂM BẦU CỬ</div>
-
-    <img src="anh.jpg" class="hero-img">
-
-    <input type="number" id="kpInput" placeholder="Nhập số khu phố (1 - 63)">
-    <br>
-    <button onclick="searchKP()">TÌM KIẾM</button>
+<div class="search">
+<input type="number" id="kp" placeholder="Nhập số khu phố (1-63)">
+<button onclick="searchKP()">Tìm kiếm</button>
 </div>
 
-<!-- TRANG 2 -->
-<div class="container page" id="page2">
-    <div class="title">THÔNG TIN KHU VỰC</div>
-
-    <p><b>Khu phố:</b> <span id="kp"></span></p>
-    <p><b>Địa điểm:</b> <span id="diadiem"></span></p>
-
-    <div class="map-box" id="mapBox"></div>
-
-    <br>
-    <button onclick="goPage(1)">QUAY LẠI</button>
-</div>
+<div class="result" id="result"></div>
 
 <script>
 
-/* DỮ LIỆU MẪU - KP 1,2 ĐÃ CÓ IFRAME */
+const shared = {
+
+// ==== MAP LINK GỐC ====
+kp12 = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.98252803073566!2d106.7229571564723!3d10.75601489397565!4f13.1",
+kp34 = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d363.544057280712!2d106.72822795279407!3d10.754552789031653!4f13.1",
+kp5 = "https://www.google.com/maps/embed?pb=!3m2!1svi!2s!6m8!1m7!1s-URZiUsW68Drv4W3x69lzg!2m2!1d10.75749525182012!2d106.7361204719659",
+kp61011 = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d489.9738914726018!2d106.73505134445696!3d10.750574630446074!4f13.1",
+kp28 = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d816.163852773952!2d106.72624409970501!3d10.741598458156817!4f13.1",
+kp59 = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1959.9650931999552!2d106.7159024537291!3d10.73986409863197!4f13.1",
+kp61 = "https://www.google.com/maps/embed?pb=!3m2!1svi!2s!6m8!1m7!1ssrdULtdWiyqpP6jPnfcrsw!2m2!1d10.74053352561422!2d106.7209417355074"
+
+};
+
+// ==== DATA FULL 63 KP ====
+
 const data = {
 
-1:{
-    dd:"VP Khu phố 1,2 - 15 Trần Văn Khánh",
-    map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.98252803073566!2d106.7229571564723!3d10.75601489397565!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f62a5a59a3d%3A0xa0915d618b1d42d7!2zMTUgVHLhuqduIFbEg24gS2jDoW5o!5e0!3m2!1svi!2s!4v1772168172365!5m2!1svi!2s" allowfullscreen="" loading="lazy"></iframe>`
-},
+1:[shared.kp12],
+2:[shared.kp12],
+3:[shared.kp34],
+4:[shared.kp34],
+5:[shared.kp5],
 
-2:{
-    dd:"VP Khu phố 1,2 - 15 Trần Văn Khánh",
-    map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.98252803073566!2d106.7229571564723!3d10.75601489397565!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f62a5a59a3d%3A0xa0915d618b1d42d7!2zMTUgVHLhuqduIFbEg24gS2jDoW5o!5e0!3m2!1svi!2s!4v1772168172365!5m2!1svi!2s" allowfullscreen="" loading="lazy"></iframe>`
-}
+6:[shared.kp61011,shared.kp61011,shared.kp61011],
+7:[shared.kp61011,shared.kp61011],
+8:[shared.kp61011,shared.kp61011,shared.kp61011],
+9:[shared.kp61011,shared.kp61011],
+10:[shared.kp61011,shared.kp61011],
+11:[shared.kp61011,shared.kp61011],
+
+12:[shared.kp34,shared.kp34],
+13:[shared.kp34,shared.kp34],
+14:[shared.kp34],
+
+15:[shared.kp59,shared.kp59],
+16:[shared.kp59],
+17:[shared.kp59,shared.kp59],
+18:[shared.kp59,shared.kp59],
+19:[shared.kp59,shared.kp59],
+20:[shared.kp59,shared.kp59],
+
+21:[shared.kp28,shared.kp28],
+22:[shared.kp28,shared.kp28],
+23:[shared.kp28],
+24:[shared.kp28,shared.kp28],
+25:[shared.kp28,shared.kp28,shared.kp28],
+26:[shared.kp28,shared.kp28,shared.kp28],
+27:[shared.kp28,shared.kp28,shared.kp28],
+28:[shared.kp28,shared.kp28,shared.kp28],
+29:[shared.kp28,shared.kp28],
+30:[shared.kp28,shared.kp28],
+31:[shared.kp28],
+32:[shared.kp28,shared.kp28,shared.kp28],
+33:[shared.kp28,shared.kp28,shared.kp28],
+34:[shared.kp28,shared.kp28,shared.kp28],
+
+35:[shared.kp28,shared.kp28],
+36:[shared.kp28,shared.kp28],
+37:[shared.kp28,shared.kp28],
+38:[shared.kp28,shared.kp28],
+39:[shared.kp28,shared.kp28],
+40:[shared.kp28],
+41:[shared.kp28],
+
+42:[shared.kp28,shared.kp28],
+43:[shared.kp28,shared.kp28],
+44:[shared.kp28],
+45:[shared.kp28],
+
+46:[shared.kp12],
+47:[shared.kp12],
+48:[shared.kp12,shared.kp12,shared.kp12],
+49:[shared.kp12,shared.kp12,shared.kp12],
+50:[shared.kp12,shared.kp12,shared.kp12],
+
+51:[shared.kp12,shared.kp28],
+52:[shared.kp28],
+53:[shared.kp28],
+54:[shared.kp12,shared.kp28],
+55:[shared.kp28,shared.kp28],
+56:[shared.kp28,shared.kp28],
+57:[shared.kp28,shared.kp28],
+
+58:[shared.kp28,shared.kp28,shared.kp59],
+59:[shared.kp28,shared.kp28,shared.kp59],
+60:[shared.kp61,shared.kp59],
+61:[shared.kp61,shared.kp59],
+62:[shared.kp61,shared.kp61],
+63:[shared.kp61,shared.kp61]
 
 };
 
 function searchKP(){
-    let kp = document.getElementById("kpInput").value;
+    const kp=document.getElementById("kp").value;
+    const result=document.getElementById("result");
 
     if(!data[kp]){
-        alert("Chưa gắn Google Map khu phố này!");
+        result.innerHTML="<h3>Không tìm thấy khu phố</h3>";
         return;
     }
 
-    document.getElementById("kp").innerText = kp;
-    document.getElementById("diadiem").innerText = data[kp].dd;
-    document.getElementById("mapBox").innerHTML = data[kp].map;
+    let html=`<h3>Khu phố ${kp}</h3>`;
 
-    goPage(2);
+    data[kp].forEach(link=>{
+        html+=`
+        <div class="map-box">
+            <iframe src="${link}" loading="lazy"></iframe>
+        </div>
+        `;
+    });
+
+    result.innerHTML=html;
 }
-
-function goPage(n){
-    document.querySelectorAll(".page").forEach(p=>p.style.display="none");
-    document.getElementById("page"+n).style.display="block";
-}
-
-goPage(1);
 
 </script>
+
 </body>
 </html>
