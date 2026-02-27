@@ -12,7 +12,7 @@ body{
     background:#b30000;
 }
 
-/* Trống đồng mờ */
+/* TRỐNG ĐỒNG MỜ TO HƠN */
 body::before{
     content:"";
     position:fixed;
@@ -20,9 +20,9 @@ body::before{
     left:0;
     width:100%;
     height:100%;
-    background:url("./trongdong.png") center center no-repeat;
-    background-size:500px;
-    opacity:0.08;
+    background:url("trongdong.png") center center no-repeat;
+    background-size:700px;
+    opacity:0.15;
     z-index:0;
 }
 
@@ -37,7 +37,7 @@ body::before{
 
 .container{
     width:90%;
-    max-width:700px;
+    max-width:800px;
     margin:30px auto;
     background:#111;
     border:2px solid gold;
@@ -51,27 +51,28 @@ body::before{
 
 .title{
     color:#ffcc00;
-    font-size:22px;
+    font-size:24px;
     margin-bottom:20px;
 }
 
 input{
-    width:80%;
-    padding:12px;
-    border-radius:5px;
+    width:85%;
+    padding:14px;
+    border-radius:8px;
     border:none;
-    margin-bottom:15px;
+    margin-bottom:20px;
     text-align:center;
+    font-size:16px;
 }
 
 button{
-    padding:10px 25px;
+    padding:12px 30px;
     background:#cc0000;
     color:white;
     border:none;
-    border-radius:5px;
+    border-radius:8px;
     cursor:pointer;
-    margin:5px;
+    font-size:16px;
 }
 
 button:hover{
@@ -82,9 +83,16 @@ button:hover{
 
 .hero-img{
     width:100%;
-    max-width:500px;
+    max-width:650px;
+    border-radius:15px;
+    margin:25px 0;
+    border:3px solid gold;
+}
+
+.map-box iframe{
+    width:100%;
+    height:400px;
     border-radius:10px;
-    margin:20px 0;
 }
 </style>
 </head>
@@ -95,27 +103,25 @@ button:hover{
     <h2>ỦY BAN BẦU CỬ PHƯỜNG TÂN THUẬN</h2>
 </div>
 
-<!-- ================= TRANG 1 ================= -->
+<!-- TRANG 1 -->
 <div class="container page" id="page1">
     <div class="title">TRA CỨU ĐỊA ĐIỂM BẦU CỬ</div>
 
-    <!-- Ảnh trang đầu -->
-    <img src="./anh.jpg" class="hero-img">
+    <img src="anh.jpg" class="hero-img">
 
     <input type="number" id="kpInput" placeholder="Nhập số khu phố (1 - 63)">
     <br>
     <button onclick="searchKP()">TÌM KIẾM</button>
 </div>
 
-<!-- ================= TRANG 2 ================= -->
+<!-- TRANG 2 -->
 <div class="container page" id="page2">
     <div class="title">THÔNG TIN KHU VỰC</div>
 
     <p><b>Khu phố:</b> <span id="kp"></span></p>
-    <p><b>Đơn vị bầu cử:</b> <span id="donvi"></span></p>
     <p><b>Địa điểm:</b> <span id="diadiem"></span></p>
 
-    <div id="mapButton"></div>
+    <div class="map-box" id="mapBox"></div>
 
     <br>
     <button onclick="goPage(1)">QUAY LẠI</button>
@@ -123,93 +129,32 @@ button:hover{
 
 <script>
 
-/* ===== DANH SÁCH 63 KHU PHỐ ===== */
-/* Mỗi khu phố gắn 1 địa điểm + link Google Map */
-
+/* DỮ LIỆU MẪU - KP 1,2 ĐÃ CÓ IFRAME */
 const data = {
-1:{dv:1, dd:"VP Khu phố 1,2 - 15 Trần Văn Khánh"},
-2:{dv:1, dd:"VP Khu phố 1,2 - 15 Trần Văn Khánh"},
-3:{dv:1, dd:"VP Khu phố 3,4 - 6/1 Lưu Trọng Lư"},
-4:{dv:1, dd:"VP Khu phố 3,4 - 6/1 Lưu Trọng Lư"},
-5:{dv:1, dd:"Nhà Văn Hóa Khu Phố 5 - Quận 7"},
-6:{dv:2, dd:"Mầm non 19/5 - Bùi Văn Ba"},
-7:{dv:2, dd:"VP Khu phố 7-9 - Huỳnh Tấn Phát"},
-8:{dv:2, dd:"VP Khu phố 7-9 - Huỳnh Tấn Phát"},
-9:{dv:2, dd:"VP Khu phố 7-9 - Huỳnh Tấn Phát"},
-10:{dv:2, dd:"Chung cư Jamona - Bùi Văn Ba"},
-11:{dv:2, dd:"Chung cư Jamona - Bùi Văn Ba"},
-12:{dv:3, dd:"Trường Tiểu học Tân Thuận Đông"},
-13:{dv:3, dd:"VP Khu phố 12-14"},
-14:{dv:3, dd:"VP Khu phố 12-14"},
-15:{dv:4, dd:"Nhà cô Nguyễn Thị Phương Lan"},
-16:{dv:4, dd:"Chung cư Lux City"},
-17:{dv:5, dd:"Nhà thi đấu Đa Năng"},
-18:{dv:5, dd:"VP Khu phố 17-20"},
-19:{dv:6, dd:"Trường THCS Huỳnh Tấn Phát"},
-20:{dv:6, dd:"Trường THCS Huỳnh Tấn Phát"},
-21:{dv:7, dd:"Khu nhà mẫu Xuân Mai"},
-22:{dv:7, dd:"VP Khu phố 39-41"},
-23:{dv:8, dd:"Trụ sở BHXH Quận 7"},
-24:{dv:8, dd:"VP Khu phố 42-45"},
-25:{dv:8, dd:"UBND Phường Tân Thuận"},
-26:{dv:9, dd:"VP Khu phố 49-51"},
-27:{dv:9, dd:"VP Khu phố 52-56"},
-28:{dv:9, dd:"VP Khu phố 52-56"},
-29:{dv:6, dd:"Trường THCS Huỳnh Tấn Phát"},
-30:{dv:6, dd:"Trường THCS Huỳnh Tấn Phát"},
-31:{dv:7, dd:"Khu nhà mẫu Xuân Mai"},
-32:{dv:6, dd:"Trường THCS Huỳnh Tấn Phát"},
-33:{dv:6, dd:"Trường THCS Huỳnh Tấn Phát"},
-34:{dv:6, dd:"Trường THCS Huỳnh Tấn Phát"},
-35:{dv:7, dd:"Khu nhà mẫu Xuân Mai"},
-36:{dv:7, dd:"Khu nhà mẫu Xuân Mai"},
-37:{dv:7, dd:"Khu nhà mẫu Xuân Mai"},
-38:{dv:7, dd:"Khu nhà mẫu Xuân Mai"},
-39:{dv:7, dd:"Khu nhà mẫu Xuân Mai"},
-40:{dv:7, dd:"VP Khu phố 39-41"},
-41:{dv:7, dd:"VP Khu phố 39-41"},
-42:{dv:8, dd:"Trụ sở BHXH Quận 7"},
-43:{dv:8, dd:"Trụ sở BHXH Quận 7"},
-44:{dv:8, dd:"VP Khu phố 44-45"},
-45:{dv:8, dd:"VP Khu phố 44-45"},
-46:{dv:1, dd:"VP Khu phố 46-47"},
-47:{dv:1, dd:"VP Khu phố 46-47"},
-48:{dv:8, dd:"UBND Phường Tân Thuận"},
-49:{dv:9, dd:"VP Khu phố 49-51"},
-50:{dv:9, dd:"VP Khu phố 49-51"},
-51:{dv:9, dd:"VP Khu phố 49-51"},
-52:{dv:9, dd:"VP Khu phố 52-56"},
-53:{dv:9, dd:"VP Khu phố 52-56"},
-54:{dv:9, dd:"VP Khu phố 49-51"},
-55:{dv:9, dd:"VP Khu phố 52-56"},
-56:{dv:9, dd:"VP Khu phố 52-56"},
-57:{dv:9, dd:"VP Khu phố 55-57"},
-58:{dv:10, dd:"Trường Tiểu học Nguyễn Thị Định"},
-59:{dv:10, dd:"Trường Tiểu học Nguyễn Thị Định"},
-60:{dv:10, dd:"VP Khu phố 59-61"},
-61:{dv:10, dd:"VP Khu phố 59-61"},
-62:{dv:10, dd:"Trường Mầm non Khôi Nguyên"},
-63:{dv:10, dd:"Trường Mầm non Khôi Nguyên"}
+
+1:{
+    dd:"VP Khu phố 1,2 - 15 Trần Văn Khánh",
+    map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.98252803073566!2d106.7229571564723!3d10.75601489397565!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f62a5a59a3d%3A0xa0915d618b1d42d7!2zMTUgVHLhuqduIFbEg24gS2jDoW5o!5e0!3m2!1svi!2s!4v1772168172365!5m2!1svi!2s" allowfullscreen="" loading="lazy"></iframe>`
+},
+
+2:{
+    dd:"VP Khu phố 1,2 - 15 Trần Văn Khánh",
+    map:`<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d244.98252803073566!2d106.7229571564723!3d10.75601489397565!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f62a5a59a3d%3A0xa0915d618b1d42d7!2zMTUgVHLhuqduIFbEg24gS2jDoW5o!5e0!3m2!1svi!2s!4v1772168172365!5m2!1svi!2s" allowfullscreen="" loading="lazy"></iframe>`
+}
+
 };
 
 function searchKP(){
     let kp = document.getElementById("kpInput").value;
 
     if(!data[kp]){
-        alert("Không tìm thấy khu phố!");
+        alert("Chưa gắn Google Map khu phố này!");
         return;
     }
 
     document.getElementById("kp").innerText = kp;
-    document.getElementById("donvi").innerText = data[kp].dv;
     document.getElementById("diadiem").innerText = data[kp].dd;
-
-    document.getElementById("mapButton").innerHTML =
-        `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data[kp].dd)}"
-        target="_blank"
-        style="display:inline-block;padding:10px 20px;background:#ffcc00;color:black;border-radius:8px;text-decoration:none;margin-top:10px;">
-        📍 MỞ GOOGLE MAP
-        </a>`;
+    document.getElementById("mapBox").innerHTML = data[kp].map;
 
     goPage(2);
 }
